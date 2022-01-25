@@ -1,0 +1,20 @@
+
+
+.main-container {
+  display: flex;
+  width: 100%;
+  margin: 60px 0;
+}
+
+.first-column {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 60%;
+  gap: 20px;
+  // border: 3px solid red;
+}
+
+.second-column {
+  width: 40%;
+}

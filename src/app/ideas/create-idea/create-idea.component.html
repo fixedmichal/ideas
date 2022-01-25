@@ -1,0 +1,75 @@
+<div class="container">
+  <h2>CREATE NEW ITEM!</h2>
+  <p>You can add new item through this form!</p>
+  <form [formGroup]="ideaForm" (ngSubmit)="createIdea()">
+        <input
+        formControlName="title"
+        type="text"
+        value=""
+        name="ideaTitle"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="Title">
+        <span
+        *ngIf="(ideaForm.get('title').errors?.['required'] || ideaForm.get('title').errors?.['minlength']) && ideaForm.get('title').touched"
+        class="help-block"
+        style="color: red">
+        Title should be at least 3 letters long.
+      </span>
+      <span
+      *ngIf="ideaForm.get('title').errors?.['nameIsForbidden']"
+      class="help-block"
+      style="color: red">
+      This name is forbidden.
+    </span>
+    <textarea
+    formControlName="content"
+    name="ideaContent"
+    class="form-control my-3"
+    id="exampleFormControlTextarea1"
+    rows="4"
+    placeholder="Enter your idea here!"></textarea>
+    <span
+    *ngIf="!ideaForm.get('content').valid && ideaForm.get('content').touched"
+    class="help-block"
+    style="color: red">
+    Content should be at least 10 letters long.
+   </span>
+   <p>Select a type of item:</p>
+   <div
+   class="radio-button"
+   *ngFor="let radioButton of radioButtons">
+     <label>
+       <input
+       formControlName="type"
+       type="radio"
+       name="type"
+       required
+       [value]="radioButton">
+       {{radioButton}}
+     </label>
+   </div>
+   <div class="form-group">
+    <button
+    [disabled]="!ideaForm.valid"
+    type="submit"
+    class="btn btn-primary my-3">
+    Create
+  </button>
+  <button
+    [disabled]="!ideaForm.dirty"
+    (click)="onCancel()"
+    type="button"
+    class="btn btn-danger mx-3">
+    Reset
+  </button>
+  </div>
+
+  </form>
+  <button class="btn btn-success" type="button" (click)="onGetIdeas()" >GET Ideas</button>
+  <button class="btn btn-success" type="button" (click)="onGetIdeasArray()" >GET Ideas Array</button>
+  <button class="btn btn-danger" type="button" (click)="onDeleteAll()" >DELETE ALL</button>
+
+
+
+</div>

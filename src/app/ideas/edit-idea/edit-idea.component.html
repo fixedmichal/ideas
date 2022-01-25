@@ -1,0 +1,59 @@
+<div class="container">
+  <h2>EDIT YOUR IDEA</h2>
+  <P>You can edit your idea here!</P>
+  <form (ngSubmit)="onEditIdeaSubmit()" #editIdeaForm="ngForm" >
+      <div class="form-group">
+        <input
+         [ngModel]="this.idea.title"
+         #titleInput="ngModel"
+         required
+         minlength="3"
+         type="text"
+         value=""
+         name="ideaTitle"
+         class="form-control my-3"
+         id="exampleFormControlInput1"
+         placeholder="Title"
+         >
+         <p class="help-block" *ngIf="!titleInput.valid && titleInput.touched">Title should be at least 3 letters long.</p>
+
+      </div>
+    <textarea
+      [ngModel]="this.idea.content"
+      required
+      minlength="10"
+      #contentTextarea="ngModel"
+      name="ideaContent"
+      class="form-control my-3"
+      id="exampleFormControlTextarea1"
+      rows="6"
+      placeholder="Enter your idea here!">
+    </textarea>
+    <p class="help-block" *ngIf="!contentTextarea.valid && contentTextarea.touched">Content should be at least 10 letters long.</p>
+    <div
+    class="radio-button"
+    *ngFor="let radioButton of radioButtons">
+      <label>
+        <input
+        type="radio"
+        name="type"
+        ngModel="idea"
+        required
+        [value]="radioButton">
+        {{radioButton}}
+      </label>
+    </div>
+    <button
+     [disabled]="!editIdeaForm.valid"
+     type="submit"
+     class="btn btn-primary">
+     Save
+    </button>
+    <button (click)="goToNextIdea()" type="button" class="btn btn-info mx-3">Next</button>
+    <div>
+    <button (click)="toggleMode()" class="btn btn-danger my-1">Enable Hidden Mode!</button>
+    </div>
+
+  </form>
+  <p *ngIf="edited">Changes saved!</p>
+</div>
