@@ -13,28 +13,32 @@ import { Idea } from 'src/app/shared/idea.model';
 export class EditIdeaComponent implements OnInit {
   idea: Idea;
   id: string;
-  edited: boolean = false;
+  editingFinished: boolean = false;
+  beingDeleted: boolean = false;
   modeEnabled: boolean = false;
-  radioButtons: string[] = ['observation', 'idea']
+  radioButtons: string[] = ['observation', 'idea', 'gratitude'];
   @ViewChild('editIdeaForm') editIdeaForm : NgForm;
 
   constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router) { }
 
-
+  // copying idea object (not a reference)
+  // this.idea = JSON.parse(JSON.stringify(this.dataService.getIdea(this.id)))
   ngOnInit(): void {
-    this.route.params.subscribe( (params: Params) => {
-      this.id = params['id'];
-      // copying idea object (not a reference)
-      this.idea = JSON.parse(JSON.stringify(this.dataService.getIdea(this.id)))
+    console.log("oninit of EDIT IDEA component fired")
+    this.route.parent.params.subscribe( (params: Params)=> {
+      this.dataService.getIdea(params['id']).subscribe( idea => {
+        console.log(params['id']);
+        this.idea = idea;
+        console.log(idea)
+      })
     })
-    console.log(this.idea);
   }
-
+  
   goToNextIdea() {
-    const nextId: string = this.dataService.findNextIdeaId(this.id)
-    console.log("next id: ", nextId)
-    console.log(nextId);
-    this.router.navigate(['/ideas', nextId, 'edit'], {relativeTo: this.route });
+    this.dataService.findNextIdeaId(this.id).subscribe( nextId => {
+      console.log("next id: ", nextId)
+      this.router.navigate(['/ideas', nextId, 'edit'], {relativeTo: this.route });
+    } )
   }
 
   toggleMode() {
@@ -48,7 +52,13 @@ export class EditIdeaComponent implements OnInit {
     console.log(this.editIdeaForm);
     this.idea.title = this.editIdeaForm.value.ideaTitle
     this.idea.content = this.editIdeaForm.value.ideaContent
-    // this.dataService.postIdea({strongId: 'sssssssss', title: 'nowaaa', content: 'abcdefghhjklomnqrstpuwz', creationDate: '2087', type: 'idea'});
-    this.dataService.editIdea(this.id, this.idea)
+    this.dataService.putIdea(this.id, this.idea)
+  }
+
+
+  goBack() {
+    this.router.navigate([".."], {relativeTo: this.route});
+    this.dataService.modeChosenSubject.next(false)
+
   }
 }

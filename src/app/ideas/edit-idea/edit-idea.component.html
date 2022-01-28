@@ -1,7 +1,7 @@
-<div class="container">
+<div *ngIf="!this.beingDeleted" class="container">
   <h2>EDIT YOUR IDEA</h2>
   <P>You can edit your idea here!</P>
-  <form (ngSubmit)="onEditIdeaSubmit()" #editIdeaForm="ngForm" >
+  <form class="form-container" (ngSubmit)="onEditIdeaSubmit()" #editIdeaForm="ngForm" >
       <div class="form-group">
         <input
          [ngModel]="this.idea.title"
@@ -30,18 +30,20 @@
       placeholder="Enter your idea here!">
     </textarea>
     <p class="help-block" *ngIf="!contentTextarea.valid && contentTextarea.touched">Content should be at least 10 letters long.</p>
-    <div
-    class="radio-button"
-    *ngFor="let radioButton of radioButtons">
-      <label>
-        <input
-        type="radio"
-        name="type"
-        ngModel="idea"
-        required
-        [value]="radioButton">
-        {{radioButton}}
-      </label>
+    <div class="container-flex my-3">
+      <div  
+      class="radio-button mx-1"
+      *ngFor="let radioButton of radioButtons">
+        <label>
+          <input
+          type="radio"
+          name="type"
+          ngModel="idea"
+          required
+          [value]="radioButton">
+          {{radioButton}}
+        </label>
+      </div>
     </div>
     <button
      [disabled]="!editIdeaForm.valid"
@@ -49,11 +51,15 @@
      class="btn btn-primary">
      Save
     </button>
-    <button (click)="goToNextIdea()" type="button" class="btn btn-info mx-3">Next</button>
+    <button (click)="goBack()" class="btn btn-warning mx-3">Back</button>
     <div>
-    <button (click)="toggleMode()" class="btn btn-danger my-1">Enable Hidden Mode!</button>
+      <button (click)="goToNextIdea()" type="button" class="btn btn-info my-3">Next</button>
+    </div>
+    <div>
+      <button (click)="toggleMode()" type="button" class="btn btn-danger my-1">Enable Hidden Mode!</button>
     </div>
 
   </form>
-  <p *ngIf="edited">Changes saved!</p>
+  <p *ngIf="editingFinished">Changes saved!</p>
 </div>
+

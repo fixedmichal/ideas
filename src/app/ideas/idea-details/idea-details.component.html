@@ -1,1 +1,6 @@
-
+<div class="container">
+    <h2>Idea details!</h2>
+    <app-idea [idea]="idea"></app-idea>
+   <app-idea-details-menu *ngIf="!isModeChosen"></app-idea-details-menu>
+    <router-outlet></router-outlet>
+</div>

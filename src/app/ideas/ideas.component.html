@@ -1,11 +1,6 @@
 <h3 *ngIf="modeEnabled">Hidden Mode enabled!</h3>
 <main class="main-container">
-  <div class="first-column column">
-    <app-idea [idea]="idea" *ngFor="let idea of ideas"></app-idea>
-  </div>
-  <div class="second-column column">
-    <router-outlet></router-outlet>
-  </div>
+    <app-idea class="app-idea-component" [idea]="idea" *ngFor="let idea of ideas" ></app-idea>
 </main>
 
 

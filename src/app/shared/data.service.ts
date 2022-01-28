@@ -1,30 +1,33 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { map, Observable, Subject } from "rxjs";
 import { Idea } from "./idea.model";
 
 @Injectable({providedIn: 'root'})
 export class DataService {
-    ideas: Idea[] = []
+    ideas: Idea[] = [];
+
     mainUrl : string = 'https://ideas-db592-default-rtdb.firebaseio.com/';
     ideasNode: string = 'ideas';
     jsonExtension: string = ".json";
     ideasUrl: string = this.mainUrl + this.ideasNode
-    ideasCounter: number;
     dataChanged = new Subject<any>();
     dataRetrieved = new Subject<any>();
-
+    modeChosenSubject = new Subject<boolean>();
     modeToggleEmitter = new Subject<boolean>();
 
     constructor(private http: HttpClient) {
-      this.getIdeas().subscribe(ideas => this.ideas = ideas);
-      this.dataChanged.subscribe( ()=> {
-        this.getIdeas().subscribe(ideas => {
-          this.ideas = ideas;
-          console.log("dupaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      console.log("constructor of data service fired!")
+      console.log(this.ideasUrl)
+      // this.getIdeas().subscribe(ideas => {
+      //   this.ideas = ideas
+      // } );
+      // this.dataChanged.subscribe( ()=> {
+      //   this.getIdeas().subscribe(ideas => {
+      //     this.ideas = ideas;
 
-          this.dataRetrieved.next("");
-      })})
+      //     this.dataRetrieved.next("");
+      // })})
     }
 
 
@@ -48,60 +51,53 @@ export class DataService {
     getIdeas(): Observable<Idea[]> {
       const finalUrl = this.ideasUrl + this.jsonExtension;
 
-      const ideasArray = [];
 
       return this.http.get<{[key: string] : Idea}[]>(finalUrl)
       .pipe(map(responseData => {
+        const ideasArray = [];
         for(const key in responseData) {
           ideasArray.push({...responseData[key], strongId: key})
         }
         return ideasArray;
       }));
-
-
     }
 
     deleteAllIdeas() {
-      const ideasUrl = this.mainUrl + this.ideasNode;
-
-      this.http.delete(ideasUrl).subscribe((response)=> console.log("All responses deleted", response));
+      const finalUrl = this.ideasUrl + this.jsonExtension;
+      this.http.delete(finalUrl).subscribe((response)=> console.log("All responses deleted", response));
       this.ideas = [];
     }
 
+    deleteIdea(id: string): Observable<any>{
+      const finalUrl = this.ideasUrl + '/' + id + this.jsonExtension
+      return this.http.delete(finalUrl);
+    }
 
-    // incrementIdeasCounter() : number {
-    //   this.ideasCounter++;
-    //   return this.ideasCounter;
-    // }
+    getIdea(id: string) : Observable<Idea> {
+      return this.getIdeas().pipe(map( ideasArray => {
+        const foundIdea = ideasArray.find( s => {
+          return s.strongId === id;
+        });
+        return foundIdea;
+      }))
+      
+    }
 
+    findNextIdeaId(id: string): Observable<string> {
+      return this.getIdeas().pipe(map( ideasArray => {
+        const foundIdea = ideasArray.find( s => {
+          return s.strongId === id;
+        });
+        const nextIdeaIndex = ideasArray.indexOf(foundIdea) + 1;
+        const nextIdeaId = ideasArray[nextIdeaIndex].strongId;
+        return nextIdeaId;
+      }))
+      
+    }
+    // rather not going to be used anymore
     addIdea(idea : Idea) {
       this.ideas.push(idea)
     }
-
-    getIdea(id: string) : Idea {
-      const foundIdea = this.ideas.find( s => {
-        return s.strongId === id;
-      });
-      return foundIdea;
-    }
-
-    findNextIdeaId(id: string) {
-      const currentIdea = this.getIdea(id);
-      const nextIdeaIndex = this.ideas.indexOf(currentIdea) + 1;
-      const nextIdeaId = this.ideas[nextIdeaIndex].strongId;
-      return nextIdeaId;
-    }
-
-    editIdea(id: string, idea: Idea) {
-      // const foundIdea = this.ideas.find( s => {
-      //   return s.strongId === id;
-      // });
-      // foundIdea.title = idea.title;
-      // foundIdea.content = idea.content;
-      this.putIdea(id, idea);
-    }
-
-
 }
 
 

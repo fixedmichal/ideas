@@ -13,19 +13,24 @@ import { HomeComponent } from './home/home.component';
 import { EditIdeaComponent } from './ideas/edit-idea/edit-idea.component';
 import { IdeaDetailsComponent } from './ideas/idea-details/idea-details.component';
 import { DeleteIdeaComponent } from './ideas/delete-idea/delete-idea.component';
+import { DeletedIdeaComponent } from './ideas/deleted-idea/deleted-idea.component';
+import { IdeaWrapperComponent } from './idea-wrapper/idea-wrapper.component';
+import { IdeaDetailsMenuComponent } from './ideas/idea-details/idea-details-menu/idea-details-menu.component';
 
 const appRoutes : Routes = [{path: '', component: HomeComponent},
                             {path: 'create', component: CreateIdeaComponent},
-                            {path: 'ideas', component: IdeasComponent, children: [
-                              {path: 'create', component: CreateIdeaComponent},
-                              {path: ':id/edit', component: EditIdeaComponent},
-                              {path: ':id/delete', component: DeleteIdeaComponent}
+                            {path: 'ideas', component: IdeasComponent},
+                            {path: ':id/details', component: IdeaDetailsComponent, children:
+                             [{path: 'edit', component: EditIdeaComponent},
+                             {path: 'delete', component: DeleteIdeaComponent},
+                             {path: 'deleted', component: DeletedIdeaComponent}
                             ]},
+                            
                             {path: '**', component: HomeComponent}
                             // {path: 'ideas/:id', component: IdeaDetailsComponent, children: [
                             //   {path: '', component: IdeaComponent}
 
-
+                            // {path: '', component: IdeaWrapperComponent},
 ];
 @NgModule({
   declarations: [
@@ -38,7 +43,10 @@ const appRoutes : Routes = [{path: '', component: HomeComponent},
     RandomColorClassDirective,
     EditIdeaComponent,
     IdeaDetailsComponent,
-    DeleteIdeaComponent
+    DeleteIdeaComponent,
+    DeletedIdeaComponent,
+    IdeaWrapperComponent,
+    IdeaDetailsMenuComponent
   ],
   imports: [
     BrowserModule,

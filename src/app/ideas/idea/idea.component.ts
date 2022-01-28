@@ -13,11 +13,12 @@ export class IdeaComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) { }
 
   ngOnInit(): void {
-
+    console.log("oninit of IDEA component fired")
+    
   }
 
   onIdeaEdit(ideaId: string) {
-    this.router.navigate([ideaId, 'edit'], {relativeTo: this.route});
+    this.router.navigate([`/${ideaId}`, 'details']);
   }
 
 }
