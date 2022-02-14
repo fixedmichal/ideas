@@ -1,6 +1,15 @@
 <h3 *ngIf="modeEnabled">Hidden Mode enabled!</h3>
-<main class="main-container">
-    <app-idea class="app-idea-component" [idea]="idea" *ngFor="let idea of ideas" ></app-idea>
-</main>
+<main class="main-content my-3">
+    <h2>Ideas</h2>
+    <div class="menu-buttons">
+        <button (click)="changeFilterType('idea')" class="btn btn-info">Ideas</button>
+        <button (click)="changeFilterType('observation')" class="btn btn-warning mx-3">Observations</button>
+        <button (click)="changeFilterType('gratitude')" class="btn btn-primary">Gratitudes</button>
+        <button (click)="changeFilterType('all')" class="btn btn-dark my-3" style="display: block; padding: 10px 100px;">All</button>
 
+    </div>
+    <div class="ideas-container">
+        <app-idea class="app-idea-component" [idea]="idea" *ngFor="let idea of ideas | filter:filterType" ></app-idea>
+    </div>
+</main>
 

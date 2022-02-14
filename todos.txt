@@ -1,0 +1,6 @@
+brak potwierdzenia, ze forma zostala stworzona
+
+brak potwierdzenia, ze forma zostala edytowana
+
+
+".read": "auth != null"

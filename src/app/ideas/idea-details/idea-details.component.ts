@@ -9,8 +9,11 @@ import { Idea } from 'src/app/shared/idea.model';
   styleUrls: ['./idea-details.component.scss']
 })
 export class IdeaDetailsComponent implements OnInit {
+
   idea: Idea;
+
   isModeChosen: boolean = false;
+  
   constructor(private router: Router,
               private route: ActivatedRoute,
               private dataService: DataService) { }
@@ -23,10 +26,13 @@ export class IdeaDetailsComponent implements OnInit {
         this.idea = idea;
         console.log(idea)
       })
-    })
+    });
+
     this.dataService.modeChosenSubject.subscribe( data => {
       this.isModeChosen = data;
-    })
+    });
+
+  
     // console.log("ONINIT!")
     // const id = +this.route.snapshot.params['id'];
     // const idea = this.dataService.getIdea(id);

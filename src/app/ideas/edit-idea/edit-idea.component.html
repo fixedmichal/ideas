@@ -1,25 +1,28 @@
+<app-alert *ngIf="ideaEditedMessage" [message]="ideaEditedMessage" (closeWindow)="onHandleSuccessMessage()"></app-alert>
 <div *ngIf="!this.beingDeleted" class="container">
   <h2>EDIT YOUR IDEA</h2>
   <P>You can edit your idea here!</P>
-  <form class="form-container" (ngSubmit)="onEditIdeaSubmit()" #editIdeaForm="ngForm" >
-      <div class="form-group">
-        <input
-         [ngModel]="this.idea.title"
-         #titleInput="ngModel"
-         required
-         minlength="3"
-         type="text"
-         value=""
-         name="ideaTitle"
-         class="form-control my-3"
-         id="exampleFormControlInput1"
-         placeholder="Title"
-         >
-         <p class="help-block" *ngIf="!titleInput.valid && titleInput.touched">Title should be at least 3 letters long.</p>
+  <form class="form-container" 
+  (ngSubmit)="onEditIdeaSubmit()" 
+  #editIdeaForm="ngForm" >
 
-      </div>
+    <div class="form-group">
+      <input
+        [ngModel]="this.idea?.title"
+        #titleInput="ngModel"
+        required
+        minlength="3"
+        type="text"
+        name="ideaTitle"
+        class="form-control my-3"
+        id="exampleFormControlInput1"
+        placeholder="Title"
+        >
+        <p class="help-block" *ngIf="!titleInput.valid && titleInput.touched">Title should be at least 3 letters long.</p>
+    </div>
+
     <textarea
-      [ngModel]="this.idea.content"
+      [ngModel]="this.idea?.content"
       required
       minlength="10"
       #contentTextarea="ngModel"
@@ -29,7 +32,9 @@
       rows="6"
       placeholder="Enter your idea here!">
     </textarea>
+
     <p class="help-block" *ngIf="!contentTextarea.valid && contentTextarea.touched">Content should be at least 10 letters long.</p>
+    
     <div class="container-flex my-3">
       <div  
       class="radio-button mx-1"
@@ -38,28 +43,33 @@
           <input
           type="radio"
           name="type"
-          ngModel="idea"
+          [ngModel]="idea?.type"
           required
           [value]="radioButton">
           {{radioButton}}
         </label>
       </div>
     </div>
+    
     <button
      [disabled]="!editIdeaForm.valid"
      type="submit"
      class="btn btn-primary">
      Save
     </button>
+
     <button (click)="goBack()" class="btn btn-warning mx-3">Back</button>
+    
     <div>
       <button (click)="goToNextIdea()" type="button" class="btn btn-info my-3">Next</button>
     </div>
+
     <div>
       <button (click)="toggleMode()" type="button" class="btn btn-danger my-1">Enable Hidden Mode!</button>
     </div>
 
   </form>
+
   <p *ngIf="editingFinished">Changes saved!</p>
 </div>
 

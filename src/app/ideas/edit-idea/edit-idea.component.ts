@@ -13,10 +13,15 @@ import { Idea } from 'src/app/shared/idea.model';
 export class EditIdeaComponent implements OnInit {
   idea: Idea;
   id: string;
+
   editingFinished: boolean = false;
   beingDeleted: boolean = false;
   modeEnabled: boolean = false;
+
+  ideaEditedMessage = null;
+
   radioButtons: string[] = ['observation', 'idea', 'gratitude'];
+
   @ViewChild('editIdeaForm') editIdeaForm : NgForm;
 
   constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router) { }
@@ -27,7 +32,9 @@ export class EditIdeaComponent implements OnInit {
     console.log("oninit of EDIT IDEA component fired")
     this.route.parent.params.subscribe( (params: Params)=> {
       this.dataService.getIdea(params['id']).subscribe( idea => {
-        console.log(params['id']);
+        this.id = params['id'];
+        console.log(this.id)
+
         this.idea = idea;
         console.log(idea)
       })
@@ -50,15 +57,25 @@ export class EditIdeaComponent implements OnInit {
   // onSubmit(form: NgForm) {
   onEditIdeaSubmit() {
     console.log(this.editIdeaForm);
+    this.idea.type = this.editIdeaForm.value.type
     this.idea.title = this.editIdeaForm.value.ideaTitle
     this.idea.content = this.editIdeaForm.value.ideaContent
-    this.dataService.putIdea(this.id, this.idea)
+    console.log(this.idea)
+    this.dataService.putIdea(this.id, this.idea).subscribe(response=> {
+      console.log("put request done", response);
+      this.ideaEditedMessage = "Idea edited successfully";
+    });
   }
 
 
   goBack() {
     this.router.navigate([".."], {relativeTo: this.route});
     this.dataService.modeChosenSubject.next(false)
+  }
 
+  onHandleSuccessMessage() {
+    this.ideaEditedMessage = null;
+    this.dataService.modeChosenSubject.next(false)
+    this.router.navigate(['..'], {relativeTo: this.route})
   }
 }

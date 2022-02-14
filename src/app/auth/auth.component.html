@@ -1,0 +1,103 @@
+<div class="container main-container my-5">
+
+    <!-- <div *ngIf="errorMessage" class="alert alert-danger">
+        <p>{{errorMessage}}</p>
+    </div> -->
+    <app-alert [message]="errorMessage" *ngIf="errorMessage" (closeWindow)="onHandleError()"></app-alert>
+    <div *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+
+    <div *ngIf="!isLoading">
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input (change)="onLoginChecked()" type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-success" for="btnradio1">Login</label>
+
+            <input (change)="onRegistrationChecked()" type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+            <label class="btn btn-outline-success" for="btnradio3">Registration</label>
+        </div>
+
+        <form *ngIf="isInLoginMode && !isLoading"
+        class="form-container login-form" 
+        (ngSubmit)="onLoginSubmit()"
+        #loginForm="ngForm">
+
+            <div class="form-group">
+                <input 
+                ngModel
+                name="loginEmail"
+                class="form-control my-3"
+                type="email" 
+                placeholder="Email">
+
+                <input 
+                ngModel
+                name="loginPassword"
+                class="form-control my-3"
+                type="password" 
+                placeholder="Password">
+            </div>
+
+            <div class="form-group center">
+                <button type="submit" 
+                class="btn btn-primary">
+                Login
+                </button>
+            </div>
+
+        </form>
+
+        <form *ngIf="!isInLoginMode" 
+        #registerForm="ngForm"
+        (ngSubmit)="onRegisterSubmit()"
+        class="form-container register-form">
+            <div class="form-group">
+                <input 
+                ngModel 
+                name="registerFirstName"
+                class="form-control my-3"
+                type="text" 
+                placeholder="First name" 
+                >
+
+                <input
+                ngModel
+                name="registerLastName" 
+                class="form-control my-3"
+                type="text" 
+                placeholder="Last name">
+
+                <input 
+                ngModel
+                name="registerEmail"
+                class="form-control my-3"
+                type="email" 
+                placeholder="Email">
+
+                <input
+                ngModel
+                name="registerPassword"
+                class="form-control my-3"
+                type="password" 
+                placeholder="Password">
+            </div>
+
+            <div class="form-group center">
+                <button type="submit" 
+                class="btn btn-primary">
+                Register
+                </button>
+
+                <button (click)="onRegisterFormClear()"
+                type="button"
+                class="btn btn-danger mx-3">
+                Clear
+                </button>
+            </div>
+
+        </form>
+    </div>
+    
+</div>
+
+

@@ -1,15 +1,24 @@
 
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 85%;
+  margin: auto;
+}
 
-.main-container {
+.ideas-container {
   display: flex;
   width: 85%;
   gap: 20px;
-  margin: 60px auto;
+  margin: 20px auto;
   flex-wrap: wrap;
 }
+
 .app-idea-component {
   cursor: pointer;
 }
+
 .first-column {
   display: flex;
   flex-wrap: wrap;

@@ -11,9 +11,13 @@ import { Idea } from 'src/app/shared/idea.model';
   styleUrls: ['./create-idea.component.scss']
 })
 export class CreateIdeaComponent implements OnInit {
+
   ideaForm: FormGroup;
+
   radioButtons: string[] = ['observation', 'idea', 'gratitude']
+
   forbiddenNames: string[] = ["Test", "Bob"];
+  
   constructor(private dataService: DataService, private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -51,17 +55,11 @@ export class CreateIdeaComponent implements OnInit {
     this.ideaForm.reset()
   }
 
-  onGetIdeasArray() {
-    console.log(this.dataService.ideas)
-  }
-
   onGetIdeas() {
     this.dataService.getIdeas();
   }
 
-  onDeleteAll() {
-    this.dataService.deleteAllIdeas()
-  }
+  
 
   forbiddenNameValidator(control: FormControl) : {[s: string]: boolean} {
     if(this.forbiddenNames.indexOf(control.value) !== -1) {

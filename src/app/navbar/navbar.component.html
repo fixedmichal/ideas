@@ -9,15 +9,21 @@
       <li class="nav-item active">
         <a class="nav-link" routerLink="/">Home</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="!isAuthenticated" class="nav-item">
+        <a class="nav-link" routerLink="/auth">Authenticate</a>
+      </li>
+      <li *ngIf="isAuthenticated" class="nav-item">
         <a class="nav-link" routerLink="/create">Create</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="isAuthenticated" class="nav-item">
         <a class="nav-link" routerLink="/ideas">Ideas</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" >Contact</a>
+        <a class="nav-link disabled">Contact</a>
       </li>
     </ul>
+    <div *ngIf="isAuthenticated" class="navbar-right" style="cursor:pointer;">
+      <a class="nav-link" (click)="onLogout()">Logout</a>
+    </div>
   </div>
 </nav>

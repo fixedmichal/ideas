@@ -1,12 +1,12 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map, Observable, Subject } from "rxjs";
+import { map, Observable, shareReplay, Subject, take, tap } from "rxjs";
+import { AuthService } from "../auth/auth.service";
 import { Idea } from "./idea.model";
 
 @Injectable({providedIn: 'root'})
 export class DataService {
-    ideas: Idea[] = [];
-
+    
     mainUrl : string = 'https://ideas-db592-default-rtdb.firebaseio.com/';
     ideasNode: string = 'ideas';
     jsonExtension: string = ".json";
@@ -16,41 +16,43 @@ export class DataService {
     modeChosenSubject = new Subject<boolean>();
     modeToggleEmitter = new Subject<boolean>();
 
-    constructor(private http: HttpClient) {
+    constructor(
+      private http: HttpClient, 
+      private authService: AuthService) {
+        
       console.log("constructor of data service fired!")
       console.log(this.ideasUrl)
       // this.getIdeas().subscribe(ideas => {
       //   this.ideas = ideas
       // } );
-      // this.dataChanged.subscribe( ()=> {
+      // // this.dataChanged.subscribe( ()=> {
       //   this.getIdeas().subscribe(ideas => {
       //     this.ideas = ideas;
 
       //     this.dataRetrieved.next("");
       // })})
+
+
     }
 
-
-
+   
     postIdea(body: Idea) {
       const finalUrl = this.ideasUrl + this.jsonExtension
+
       this.http.post<{name: string}>(finalUrl, body)
       .subscribe( response => console.log("POST request sent!", response));
       this.dataChanged.next("");
     }
 
     putIdea(strongId: string, body: Idea) {
+      console.log(strongId);
       const finalUrl = this.ideasUrl + '/' + strongId + this.jsonExtension;
-      this.http.put(finalUrl, body).subscribe(response=> {
-        console.log("put request done", response);
-        this.dataChanged.next("");
-      });
-
+      return this.http.put(finalUrl, body)
     }
 
     getIdeas(): Observable<Idea[]> {
       const finalUrl = this.ideasUrl + this.jsonExtension;
-
+      
 
       return this.http.get<{[key: string] : Idea}[]>(finalUrl)
       .pipe(map(responseData => {
@@ -64,12 +66,14 @@ export class DataService {
 
     deleteAllIdeas() {
       const finalUrl = this.ideasUrl + this.jsonExtension;
+
       this.http.delete(finalUrl).subscribe((response)=> console.log("All responses deleted", response));
-      this.ideas = [];
+      // this.ideas = [];
     }
 
     deleteIdea(id: string): Observable<any>{
       const finalUrl = this.ideasUrl + '/' + id + this.jsonExtension
+      
       return this.http.delete(finalUrl);
     }
 
@@ -94,10 +98,7 @@ export class DataService {
       }))
       
     }
-    // rather not going to be used anymore
-    addIdea(idea : Idea) {
-      this.ideas.push(idea)
-    }
+    
 }
 
 
