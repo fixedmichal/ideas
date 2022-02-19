@@ -1,4 +1,4 @@
-<div appRandomColorClass (click)="onIdeaEdit(idea.strongId)" class="card text-white mb-3" style="max-width: 28rem;">
+<div [appTypeColorClass]="idea.type" (click)="onIdeaEdit(idea.strongId)" class="card text-white mb-3" style="max-width: 28rem;">
   <div class="card-body">
     <h5 class="card-title">{{idea?.title}}</h5>
     <p class="card-text">{{idea?.content}}</p>

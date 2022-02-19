@@ -3,7 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes} from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+
+import { StoreModule } from '@ngrx/store';
+import { ideasReducer } from './ideas/store/ideas.reducer';
+
 import { RandomColorClassDirective } from './shared/random-color-class.directive';
+import { TypeColorClassDirective } from './shared/type-color-class.directive';
 import { AuthGuard } from './auth/auth.guard';
 
 import { AppComponent } from './app.component';
@@ -49,6 +54,7 @@ const appRoutes : Routes = [{path: '', component: HomeComponent},
     CreateIdeaComponent,
     HomeComponent,
     RandomColorClassDirective,
+    TypeColorClassDirective,
     EditIdeaComponent,
     IdeaDetailsComponent,
     DeleteIdeaComponent,
@@ -66,6 +72,7 @@ const appRoutes : Routes = [{path: '', component: HomeComponent},
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
+    StoreModule.forRoot({ideas: ideasReducer})
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, 
     useClass: AuthInterceptorService, 

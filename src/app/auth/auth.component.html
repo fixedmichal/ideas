@@ -1,15 +1,17 @@
-<div class="container main-container my-5">
 
+
+<div class="container main-container my-5">
+    <div  *ngIf="isLoading" class="center">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
     <!-- <div *ngIf="errorMessage" class="alert alert-danger">
         <p>{{errorMessage}}</p>
     </div> -->
     <app-alert [message]="errorMessage" *ngIf="errorMessage" (closeWindow)="onHandleError()"></app-alert>
-    <div *ngIf="isLoading">
-        <app-loading-spinner></app-loading-spinner>
-    </div>
+   
 
     <div *ngIf="!isLoading">
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        <div class="btn-group stretch" role="group" aria-label="Basic radio toggle button group">
             <input (change)="onLoginChecked()" type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
             <label class="btn btn-outline-success" for="btnradio1">Login</label>
 
@@ -38,7 +40,7 @@
                 placeholder="Password">
             </div>
 
-            <div class="form-group center">
+            <div class="form-group ">
                 <button type="submit" 
                 class="btn btn-primary">
                 Login

@@ -2,12 +2,25 @@
 
 .main-container {
     max-width: 450px;
-    display: flex;
-    flex-direction: column;
+    height: 100vh;
+    text-align: center;
 }
 
 .center {
-    margin: auto;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stretch {
+    width: 100%;
+}
+
+.center {
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 500;
 }
 
